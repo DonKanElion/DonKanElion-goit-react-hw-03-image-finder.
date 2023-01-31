@@ -1,6 +1,5 @@
 @import-normalize; /* bring in normalize.css styles */
 
-
 html {
   box-sizing: border-box;
   width: 100vw;
@@ -64,4 +63,9 @@ li {
   text-decoration: none;
 }
 
+@import './App.module.css';
 @import './components/Searchbar/Searchbar.module.css';
+@import './components/ImageGallery/ImageGallery.module.css';
+@import './components/ImageGalleryItem/ImageGalleryItem.module.css';
+@import './components/Loader/Loader.module.css';
+@import './components/Modal/Modal.module.css';

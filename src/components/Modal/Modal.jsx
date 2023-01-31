@@ -3,3 +3,5 @@ const Modal = () => {
 }
 
 export default Modal;
+
+// Css Overlay and Modal
