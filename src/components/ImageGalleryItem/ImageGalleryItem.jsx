@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 
-const ImageGalleryItem = (webformatURL, largeImageURL, tags) => {
-  console.log(' Hello ImageGalleryItem');
-
-  return (
+const ImageGalleryItem = ({webImg, alt}) => {
+  return ( 
     <li className="ImageGalleryItem">
-      <img src={webformatURL} alt={tags} id={largeImageURL} className="ImageGalleryItem-image"/>
+
+      <img src={webImg} alt={alt} className="ImageGalleryItem-image"/>
+
     </li>
   );
 };
@@ -15,6 +15,5 @@ ImageGalleryItem.propTypes = {
     largeImageURL: PropTypes.string.isRequired,
     tags: PropTypes.string.isRequired,
 }
-
 
 export default ImageGalleryItem;

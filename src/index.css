@@ -67,5 +67,5 @@ li {
 @import './components/Searchbar/Searchbar.module.css';
 @import './components/ImageGallery/ImageGallery.module.css';
 @import './components/ImageGalleryItem/ImageGalleryItem.module.css';
-@import './components/Loader/Loader.module.css';
+@import './components/Button/Button.module.css';
 @import './components/Modal/Modal.module.css';

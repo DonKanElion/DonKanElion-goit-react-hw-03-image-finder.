@@ -4,8 +4,8 @@ import images from '../src/testBase.json';
 import Searchbar from './components/Searchbar';
 // import { getImages } from '../js/apiService';
 import ImageGallery from './components/ImageGallery';
-// import Loader from './Loader';
-// import Button from './Button';
+import Loader from './components/Loader';
+import Button from './components/Button';
 // import Modal from './Modal';
 
 export class App extends Component {
@@ -52,13 +52,12 @@ export class App extends Component {
           // color: '#010101',
         }}
       >
-        😈 React homework template ♻️
         <Searchbar onSubmit={this.onSubmit} >
         </Searchbar>
         <ImageGallery images={images.hits}></ImageGallery>
-        {/* <Loader></Loader>
-        <Button> </Button>
-        <Modal></Modal> */}
+        <Loader></Loader>
+        <Button></Button>
+        {/* <Modal></Modal> */}
       </div>
     );
   }
