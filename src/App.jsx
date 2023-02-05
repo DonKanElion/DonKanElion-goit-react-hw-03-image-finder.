@@ -3,6 +3,7 @@ import images from '../src/testBase.json';
 
 import Searchbar from './components/Searchbar';
 // import { getImages } from '../js/apiService';
+import {getImages} from './services/imagesApi';
 import ImageGallery from './components/ImageGallery';
 import Loader from './components/Loader';
 import Button from './components/Button';
@@ -11,16 +12,41 @@ import Button from './components/Button';
 export class App extends Component {
   state = {
     // status: [],
-    searchValue: '',
+    searchValue: 'cat',
   };
 
  
+  componentDidMount(){
+    const { searchValue } = this.state;
+    console.log('componentDidMount');
+
+    // getImages(cat, page = 1);
+
+    this.fetchData(5);
+    this.getImages(searchValue, 2)
+  }
+
+
   onSubmit = searchValue => {
     console.log("Виклик getValue в App");
     this.setState({
       searchValue,
     });
   };
+
+  fetchData = async (page = 1) => {
+    const { searchValue } = this.state;
+    try{
+      const data = await getImages(searchValue, page);
+      console.log('фаза data: ', data);
+    }
+    catch(error){
+      console.log('Error', error);
+    }
+    finally {
+      console.log('finaly - loader - off')
+    }
+  }
 
   // getImages = () => {
   //   fetch(
