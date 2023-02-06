@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React,{ Component } from 'react';
 
 class Searchbar extends Component {
   state = {
@@ -21,7 +21,7 @@ class Searchbar extends Component {
     const checkSubmit = searchValue.trim();
     console.log('Викликана ф-ція Submit', searchValue);
 
-    if (checkSubmit !== '') {
+    if (checkSubmit) {
       return onSubmit(searchValue);
     }
     alert('Поле порожнє, введіть букви для пошуку');
@@ -39,7 +39,6 @@ class Searchbar extends Component {
             onClick={this.handleSubmit}
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               width="14"
               height="14"
               fill="currentColor"
@@ -54,8 +53,8 @@ class Searchbar extends Component {
             className="SearchForm-input"
             type="text"
             onChange={this.handleChange}
-            autocomplete="off"
-            autofocus
+            // autocomplete="off"
+            // autofocus
             placeholder="Search images and photos"
           />
         </form>
