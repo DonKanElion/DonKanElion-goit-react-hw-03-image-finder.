@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import imagesBase from '../src/testBase.json';
 
 import Searchbar from './components/Searchbar';
 
-// import imagesApi from './services/imagesApi';
+import { fetchImages } from './services/imagesApi';
 
 import ImageGallery from './components/ImageGallery';
 import Loader from './components/Loader';
@@ -16,52 +15,85 @@ export class App extends Component {
     page: 1,
     searchValue: '',
     images: [],
-    // isLoading: false,
-    // error: null,
+    isLoading: false,
+    error: null,
   };
 
-  onSubmit = searchValue => {
+  onSubmit = value => {
+    const { searchValue } = this.state;
     console.log('Виклик getValue в App');
-    this.setState({
-      searchValue,
-    });
+
+    if (value !== searchValue) {
+      this.setState({
+        searchValue: value,
+        page: 1,
+      });
+    }
   };
 
-  componentDidUpdate(_, prevState) {
-    const { searchValue, page } = this.state;
+  handleClick() {
+    console.log('click!');
+    const { page } = this.state;
+    this.setState({
+      page: page + 1,
+    });
 
-    console.log('componentDidUpdate');
-
-    if(prevState.searchValue !== this.state.searchValue){
-      this.getImages(searchValue, page)
-    }
-
+    console.log(this.state.page);
   }
 
-  getImages = (searchValue, page) => {
-    fetch(
-      `https://pixabay.com/api/?q=${searchValue}&page=${page}&key=31409515-1e05b025820d8f08d6d70aee0&image_type=photo&orientation=horizontal&per_page=12`
-    )
-      .then(response => response.json())
-      .then(images => {
-        console.log('останній then: ', images.hits);
+  async componentDidUpdate(_, prevState) {
+    const { searchValue, page } = this.state;
+    this.setState({ isLoading: true });
+    console.log('componentDidUpdate');
 
-        return this.setState({
-          images: images.hits,
-        });
-      })
-      .catch(error => console.log(error));
-  };
+    if (prevState.searchValue !== this.state.searchValue) {
+      console.log('Запит по searchValue на сервер ');
+
+      try {
+        const response = await fetchImages(searchValue, page);
+        console.log('response: ', response);
+        this.setState({ images: response.hits, isLoading: false });
+      } catch (error) {
+        return console.log(error);
+      }
+    }
+
+    if (prevState.page !== this.state.page) {
+      console.log('Запит по page на сервер');
+
+      try {
+        const response = await fetchImages(searchValue, page);
+        console.log('2 response: ', response);
+
+        const newPage = response.hits;
+
+        this.setState(prevState => ({
+          images: [...prevState.images, ...newPage],
+          isLoading: false,
+        }));
+      } catch (error) {
+        return console.log(error);
+      } finally {
+        this.setState({ isLoading: false });
+      }
+    }
+  }
 
   render() {
+    const { isLoading } = this.state;
+
     return (
       <div className="App">
         <Searchbar onSubmit={this.onSubmit}></Searchbar>
-        {/* <ImageGallery images={imagesBase.hits}></ImageGallery> */}
-        <ImageGallery images={this.state.images}></ImageGallery>
+
+        {isLoading ? (
+          <ImageGallery images={this.state.images}></ImageGallery>
+        ) : (
+          <div>LOADING</div>
+        )}
 
         <Loader></Loader>
-        <Button></Button>
+        <Button onClick={this.handleClick.bind(this)}></Button>
         {/* <Modal></Modal> */}
       </div>
     );
