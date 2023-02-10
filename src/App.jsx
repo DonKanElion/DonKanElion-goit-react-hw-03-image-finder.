@@ -7,7 +7,7 @@ import { fetchImages } from './services/imagesApi';
 import ImageGallery from './components/ImageGallery';
 import Loader from './components/Loader';
 import Button from './components/Button';
-// import Modal from './Modal';
+// import Modal from './components/Modal';
 
 export class App extends Component {
   state = {
@@ -37,28 +37,29 @@ export class App extends Component {
     this.setState({
       page: page + 1,
     });
-
     console.log(this.state.page);
   }
 
   async componentDidUpdate(_, prevState) {
     const { searchValue, page } = this.state;
-    this.setState({ isLoading: true });
+
     console.log('componentDidUpdate');
 
-    if (prevState.searchValue !== this.state.searchValue) {
+    if (prevState.searchValue !== searchValue) {
+      this.setState({ isLoading: true });
       console.log('Запит по searchValue на сервер ');
-
       try {
         const response = await fetchImages(searchValue, page);
         console.log('response: ', response);
-        this.setState({ images: response.hits, isLoading: false });
+        this.setState({ images: response.hits });
       } catch (error) {
         return console.log(error);
+      } finally {
+        this.setState({ isLoading: false });
       }
     }
 
-    if (prevState.page !== this.state.page) {
+    if (prevState.page !== page) {
       console.log('Запит по page на сервер');
 
       try {
@@ -69,7 +70,6 @@ export class App extends Component {
 
         this.setState(prevState => ({
           images: [...prevState.images, ...newPage],
-          isLoading: false,
         }));
       } catch (error) {
         return console.log(error);
@@ -84,9 +84,12 @@ export class App extends Component {
 
     return (
       <div className="App">
-        <Searchbar onSubmit={this.onSubmit}></Searchbar>
+        <Searchbar
+          onSubmit={this.onSubmit}
+          // isSubmitting={isLoading}
+        ></Searchbar>
 
-        {isLoading ? (
+        {!isLoading ? (
           <ImageGallery images={this.state.images}></ImageGallery>
         ) : (
           <div>LOADING</div>

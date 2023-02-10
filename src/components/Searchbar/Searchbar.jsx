@@ -1,6 +1,11 @@
 import React,{ Component } from 'react';
-
+import PropTypes from 'prop-types';
 class Searchbar extends Component {
+  static propTypes ={
+    // isSubmitting: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+  }
+
   state = {
     searchValue: '',
   };
@@ -37,6 +42,7 @@ class Searchbar extends Component {
             type="submit"
             className="SearchForm-button"
             onClick={this.handleSubmit}
+            // disabled={this.props.isSubmitting}
           >
             <svg
               width="14"
