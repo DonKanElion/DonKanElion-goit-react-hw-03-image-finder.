@@ -25,7 +25,7 @@ class ImageGalleryItem extends Component {
   handleClick = () => {
     const { isModalOpen } = this.state;
     if (!isModalOpen) {
-      return this.openModal();
+      this.openModal();
     }
   };
 

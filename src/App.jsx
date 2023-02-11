@@ -14,6 +14,7 @@ export class App extends Component {
     images: [],
     isLoading: false,
     error: null,
+    total: '',
   };
 
   onSubmit = value => {
@@ -48,7 +49,7 @@ export class App extends Component {
       try {
         const response = await fetchImages(searchValue, page);
         console.log('response: ', response);
-        this.setState({ images: response.hits });
+        this.setState({ images: response.hits, total: response.total });
       } catch (error) {
         return console.log(error);
       } finally {
@@ -76,9 +77,10 @@ export class App extends Component {
     }
   }
 
-  render() {
-    const { isLoading } = this.state;
 
+
+  render() {
+    const { isLoading, total, page } = this.state;
     return (
       <div className="App">
         <Searchbar
@@ -92,8 +94,13 @@ export class App extends Component {
           <div>LOADING</div>
         )}
 
-        <Loader></Loader>
-        <Button onClick={this.handleClick.bind(this)}></Button>
+        {!isLoading ? '' : <Loader></Loader>}
+
+        {(total / 12) > page ? (
+          <Button onClick={this.handleClick.bind(this)}></Button>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

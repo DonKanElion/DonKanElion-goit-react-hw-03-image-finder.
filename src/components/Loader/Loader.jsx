@@ -1,6 +1,6 @@
 const Loader = () => {
   return (
-   <p>СПИНЕР</p>
+   <p>СПИНЕР він же LOADER</p>
   );
 };
 
