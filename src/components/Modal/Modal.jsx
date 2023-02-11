@@ -1,18 +1,21 @@
+import PropTypes from 'prop-types';
 
-
-
-const Modal = () => {
-  console.log('Hello Modal');
+const Modal = ({ largeImageURL, alt, onClick }) => {
 
   return (
-    <div class="overlay">
-      <div class="modal">
-        <img src="" alt="" />
+    <div className="overlay" onClick={onClick}>
+      <div className="modal">
+        <img src={largeImageURL} alt={alt} />
+
       </div>
     </div>
   );
 };
 
-export default Modal;
+Modal.propTypes = {
+  largeImageURL: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+}
 
-// Css Overlay and Modal
+export default Modal;

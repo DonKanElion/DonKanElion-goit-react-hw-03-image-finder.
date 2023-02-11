@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 
-import Searchbar from './components/Searchbar';
-
 import { fetchImages } from './services/imagesApi';
-
+import Searchbar from './components/Searchbar';
 import ImageGallery from './components/ImageGallery';
 import Loader from './components/Loader';
 import Button from './components/Button';
-// import Modal from './components/Modal';
 
 export class App extends Component {
   state = {
@@ -97,7 +94,6 @@ export class App extends Component {
 
         <Loader></Loader>
         <Button onClick={this.handleClick.bind(this)}></Button>
-        {/* <Modal></Modal> */}
       </div>
     );
   }
