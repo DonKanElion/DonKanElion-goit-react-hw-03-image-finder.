@@ -4,6 +4,7 @@ class Searchbar extends Component {
   static propTypes = {
     // isSubmitting: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    notifyWarning: PropTypes.func.isRequired,
   };
 
   state = {
@@ -13,7 +14,6 @@ class Searchbar extends Component {
   handleChange = evt => {
     const { value } = evt.target;
 
-    console.log('Change');
     this.setState({
       searchValue: value,
     });
@@ -24,12 +24,11 @@ class Searchbar extends Component {
     const { onSubmit } = this.props;
     const { searchValue } = this.state;
     const checkSubmit = searchValue.trim();
-    console.log('Викликана ф-ція Submit', searchValue);
 
     if (checkSubmit) {
       return onSubmit(searchValue);
     }
-    alert('Поле порожнє, введіть букви для пошуку');
+    this.props.notifyWarning('It looks like you want to find nothing, please check your query.')
   };
 
   render() {

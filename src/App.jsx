@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { fetchImages } from './services/imagesApi';
 import Searchbar from './components/Searchbar';
@@ -19,7 +20,6 @@ export class App extends Component {
 
   onSubmit = value => {
     const { searchValue } = this.state;
-    console.log('Виклик getValue в App');
 
     if (value !== searchValue) {
       this.setState({
@@ -30,7 +30,6 @@ export class App extends Component {
   };
 
   handleClick() {
-    console.log('click!');
     const { page } = this.state;
     this.setState({
       page: page + 1,
@@ -41,16 +40,21 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { searchValue, page } = this.state;
 
-    console.log('componentDidUpdate');
-
     if (prevState.searchValue !== searchValue) {
       this.setState({ isLoading: true });
-      console.log('Запит по searchValue на сервер ');
+
       try {
         const response = await fetchImages(searchValue, page);
-        console.log('response: ', response);
+
+        if (response.total === 0) {
+          this.notifyWarning(
+            'Sorry, nothing was found for your request, try something else.'
+          );
+        }
+
         this.setState({ images: response.hits, total: response.total });
       } catch (error) {
+        this.notifyError();
         return console.log(error);
       } finally {
         this.setState({ isLoading: false });
@@ -58,18 +62,15 @@ export class App extends Component {
     }
 
     if (prevState.page !== page) {
-      console.log('Запит по page на сервер');
-
       try {
         const response = await fetchImages(searchValue, page);
-        console.log('2 response: ', response);
-
         const newPage = response.hits;
 
         this.setState(prevState => ({
           images: [...prevState.images, ...newPage],
         }));
       } catch (error) {
+        this.notifyError('Oops, something went wrong, please try again.');
         return console.log(error);
       } finally {
         this.setState({ isLoading: false });
@@ -77,7 +78,13 @@ export class App extends Component {
     }
   }
 
+  notifyWarning = text => {
+    Notify.warning(`${text}`);
+  }; // пустий рядок, нічого не знайдено
 
+  notifyError = () => {
+    Notify.error('Oops, something went wrong, please try again.');
+  }; // Помилка
 
   render() {
     const { isLoading, total, page } = this.state;
@@ -85,18 +92,18 @@ export class App extends Component {
       <div className="App">
         <Searchbar
           onSubmit={this.onSubmit}
+          notifyWarning={this.notifyWarning}
+
           // isSubmitting={isLoading}
         ></Searchbar>
 
         {!isLoading ? (
           <ImageGallery images={this.state.images}></ImageGallery>
         ) : (
-          <div>LOADING</div>
+          <Loader></Loader>
         )}
 
-        {!isLoading ? '' : <Loader></Loader>}
-
-        {(total / 12) > page ? (
+        {total / 12 > page ? (
           <Button onClick={this.handleClick.bind(this)}></Button>
         ) : (
           ''

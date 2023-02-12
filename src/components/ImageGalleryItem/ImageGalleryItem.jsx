@@ -37,7 +37,6 @@ class ImageGalleryItem extends Component {
   };
 
   handleBackDropClick = evt => {
-    console.log('Click BackDrop');
     if (evt.currentTarget === evt.target) {
       this.closeModal();
     }
