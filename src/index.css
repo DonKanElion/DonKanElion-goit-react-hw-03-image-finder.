@@ -63,10 +63,17 @@ li {
   text-decoration: none;
 }
 
-@import './App.module.css';
+.App {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 16px;
+  padding-bottom: 24px;
+}
+
 @import './components/Searchbar/Searchbar.module.css';
 @import './components/Loader/Loader.module.css';
 @import './components/ImageGallery/ImageGallery.module.css';
 @import './components/ImageGalleryItem/ImageGalleryItem.module.css';
 @import './components/Button/Button.module.css';
+@import './components/ScrollUp/ScrollUp.module.css';
 @import './components/Modal/Modal.module.css';

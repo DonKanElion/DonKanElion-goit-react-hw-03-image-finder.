@@ -6,6 +6,7 @@ import Searchbar from './components/Searchbar';
 import ImageGallery from './components/ImageGallery';
 import Loader from './components/Loader';
 import Button from './components/Button';
+// import ScrollUp from './components/ScrollUp';
 
 export class App extends Component {
   state = {
@@ -108,6 +109,8 @@ export class App extends Component {
         ) : (
           ''
         )}
+
+        {/* <ScrollUp></ScrollUp> */}
       </div>
     );
   }
