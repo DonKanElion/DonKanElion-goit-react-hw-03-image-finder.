@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 import Modal from '../Modal/Modal';
+// import Loader from '../Loader';
+
 
 class ImageGalleryItem extends Component {
   static propTypes = {
@@ -15,7 +17,6 @@ class ImageGalleryItem extends Component {
 
   openModal = () => {
     this.setState({ isModalOpen: true });
-    window.addEventListener('keydown', this.handleKeyDown);
   };
 
   closeModal = () => {
@@ -29,19 +30,6 @@ class ImageGalleryItem extends Component {
     }
   };
 
-  handleKeyDown = evt => {
-    if (evt.code === 'Escape') {
-      this.closeModal();
-      window.removeEventListener('keydown', this.handleKeyDown);
-    }
-  };
-
-  handleBackDropClick = evt => {
-    if (evt.currentTarget === evt.target) {
-      this.closeModal();
-    }
-  };
-
   render() {
     const { webImg, alt, largeImageURL } = this.props;
     const { isModalOpen } = this.state;
@@ -51,13 +39,17 @@ class ImageGalleryItem extends Component {
         <li className="ImageGalleryItem" onClick={this.handleClick}>
           <img src={webImg} alt={alt} className="ImageGalleryItem-image" />
         </li>
+
+        {/* {!isModalOpen && (<Loader></Loader>)} */}
+
         {isModalOpen && (
           <Modal
             largeImageURL={largeImageURL}
             alt={alt}
-            onClick={this.handleBackDropClick}
+            closeModal={this.closeModal}
           ></Modal>
         )}
+
       </>
     );
   }

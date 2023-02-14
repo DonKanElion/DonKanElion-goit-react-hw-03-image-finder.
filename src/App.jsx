@@ -8,6 +8,13 @@ import Loader from './components/Loader';
 import Button from './components/Button';
 // import ScrollUp from './components/ScrollUp';
 
+// const STATUS = {
+//   idle,
+//   penting,
+//   success, // resolve
+//   regected, // error
+// }
+
 export class App extends Component {
   state = {
     // status: [],
@@ -53,7 +60,7 @@ export class App extends Component {
           );
         }
 
-        this.setState({ images: response.hits, total: response.total });
+        return this.setState({ images: response.hits, total: response.total });
       } catch (error) {
         this.notifyError();
         return console.log(error);
@@ -63,6 +70,8 @@ export class App extends Component {
     }
 
     if (prevState.page !== page) {
+      this.setState({ isLoading: true });
+
       try {
         const response = await fetchImages(searchValue, page);
         const newPage = response.hits;
@@ -81,11 +90,11 @@ export class App extends Component {
 
   notifyWarning = text => {
     Notify.warning(`${text}`);
-  }; // пустий рядок, нічого не знайдено
+  };
 
   notifyError = () => {
     Notify.error('Oops, something went wrong, please try again.');
-  }; // Помилка
+  };
 
   render() {
     const { isLoading, total, page } = this.state;
@@ -98,16 +107,20 @@ export class App extends Component {
           // isSubmitting={isLoading}
         ></Searchbar>
 
-        {!isLoading ? (
-          <ImageGallery images={this.state.images}></ImageGallery>
-        ) : (
-          <Loader></Loader>
-        )}
+        {total && <ImageGallery images={this.state.images} />}
 
-        {total / 12 > page ? (
-          <Button onClick={this.handleClick.bind(this)}></Button>
+        {/* {isLoading && <Loader/>}
+
+        {total / 12 > page &&
+          <Button onClick={this.handleClick.bind(this)}/>
+        } */}
+
+        {isLoading ? (
+          <Loader/>
         ) : (
-          ''
+          total / 12 > page && (
+            <Button onClick={this.handleClick.bind(this)}/>
+          )
         )}
 
         {/* <ScrollUp></ScrollUp> */}
