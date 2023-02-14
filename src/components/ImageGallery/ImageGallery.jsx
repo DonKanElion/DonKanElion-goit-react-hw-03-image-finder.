@@ -24,5 +24,3 @@ ImageGallery.propTypes = {
 };
 
 export default ImageGallery;
-
-

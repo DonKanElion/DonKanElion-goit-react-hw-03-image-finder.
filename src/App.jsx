@@ -23,7 +23,7 @@ export class App extends Component {
     images: [],
     isLoading: false,
     error: null,
-    total: '',
+    total: null,
   };
 
   onSubmit = value => {
@@ -80,7 +80,7 @@ export class App extends Component {
           images: [...prevState.images, ...newPage],
         }));
       } catch (error) {
-        this.notifyError('Oops, something went wrong, please try again.');
+        this.notifyError();
         return console.log(error);
       } finally {
         this.setState({ isLoading: false });
