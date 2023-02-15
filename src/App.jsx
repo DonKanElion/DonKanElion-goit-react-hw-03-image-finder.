@@ -107,7 +107,7 @@ export class App extends Component {
           // isSubmitting={isLoading}
         ></Searchbar>
 
-        {total && <ImageGallery images={this.state.images} />}
+        {total > 0 && <ImageGallery images={this.state.images} />}
 
         {/* {isLoading && <Loader/>}
 
