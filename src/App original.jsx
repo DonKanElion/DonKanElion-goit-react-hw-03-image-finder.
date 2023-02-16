@@ -48,7 +48,7 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { searchValue, page } = this.state;
 
-    if (prevState.searchValue !== searchValue || prevState.page !== page) {
+    if (prevState.searchValue !== searchValue) {
       this.setState({ isLoading: true });
 
       try {
@@ -60,16 +60,23 @@ export class App extends Component {
           );
         }
 
-        if (prevState.searchValue !== searchValue) {
-          return this.setState({
-            images: response.hits,
-            total: response.total,
-          });
-        }
-        
+        return this.setState({ images: response.hits, total: response.total });
+      } catch (error) {
+        this.notifyError();
+        return console.log(error);
+      } finally {
+        this.setState({ isLoading: false });
+      }
+    }
+
+    if (prevState.page !== page) {
+      this.setState({ isLoading: true });
+
+      try {
+        const response = await fetchImages(searchValue, page);
         const newPage = response.hits;
 
-        return this.setState(prevState => ({
+        this.setState(prevState => ({
           images: [...prevState.images, ...newPage],
         }));
       } catch (error) {
@@ -109,9 +116,11 @@ export class App extends Component {
         } */}
 
         {isLoading ? (
-          <Loader />
+          <Loader/>
         ) : (
-          total / 12 > page && <Button onClick={this.handleClick.bind(this)} />
+          total / 12 > page && (
+            <Button onClick={this.handleClick.bind(this)}/>
+          )
         )}
 
         {/* <ScrollUp></ScrollUp> */}
